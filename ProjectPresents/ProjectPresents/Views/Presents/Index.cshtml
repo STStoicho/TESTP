@@ -1,0 +1,310 @@
+﻿@model IEnumerable<ProjectPresents.Data.Present>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    body {
+        background: rgb(255,255,255);
+        background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,182,182,1) 100%);
+    }
+
+    .presents {
+        background-color: #F96F6F;
+        border-radius: 12px;
+        font-size: 18px;
+        font-family: 'Comic Sans MS';
+        box-shadow: 3px 3px 3px 1px;
+    }
+
+
+
+
+    .buttonEdit {
+        margin: 6px;
+        width: 180px;
+        height: 80px;
+        border-radius: 8px;
+        background-color: lightskyblue;
+        transition: all 0.2s ease-out;
+    }
+
+        .buttonEdit:hover {
+            background-color: deepskyblue;
+            color: white;
+            transition: all 0.2s ease-out;
+        }
+
+    .buttonDetAdmin {
+        margin: 6px;
+        width: 180px;
+        height: 80px;
+        border-radius: 8px;
+        background-color: lightskyblue;
+        transition: all 0.2s ease-out;
+    }
+
+        .buttonDetAdmin:hover {
+            background-color: deepskyblue;
+            color: white;
+            transition: all 0.2s ease-out;
+        }
+
+    .buttonDet {
+        margin: 6px;
+        width: 180px;
+        height: 80px;
+        border-radius: 8px;
+        background-color: lightskyblue;
+        margin-top: 10px;
+        transition: all 0.2s ease-out;
+    }
+
+        .buttonDet:hover {
+            background-color: deepskyblue;
+            color: white;
+            height: 260px;
+            margin-top: 5px;
+            transition: all 0.2s ease-out;
+        }
+
+    .buttonDel {
+        margin: 6px;
+        width: 180px;
+        height: 80px;
+        border-radius: 8px;
+        background-color: red;
+        transition: all 0.2s ease-out;
+    }
+
+        .buttonDel:hover {
+            transition: all 0.2s ease-out;
+            color: white;
+            background-color: #CE0000;
+        }
+
+    #buttonCreate {
+        width: 130px;
+        height: 55px;
+        border-radius: 8px;
+        transition: all 0.2s ease-out;
+    }
+
+        #buttonCreate:hover {
+            transition: all 0.2s ease-out;
+            background-color: lightgray;
+        }
+
+    #buttonOrder {
+        width: 130px;
+        height: 55px;
+        border-radius: 8px;
+        transition: all 0.2s ease-out;
+    }
+
+        #buttonOrder:hover {
+            transition: all 0.2s ease-out;
+            background-color: lightgray;
+        }
+
+    #ccount {
+        width: 150px;
+        border-radius: 8px;
+    }
+
+    #image {
+        margin: 15px;
+        float: left;
+        border-radius: 8px;
+        box-shadow: 3px 3px 3px 1px;
+        width: 240px;
+        height: 235px;
+        transition: all 0.2s ease-out;
+        color: black;
+    }
+
+        #image:hover {
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            box-shadow: 4px 4px 12px 1px;
+            width: 250px;
+            height: 245px;
+        }
+
+    .col-sm-2 {
+        width: 50%;
+    }
+
+    .col-sm-10 {
+        width: 50%;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+</style>
+
+<br>
+<h1 style="text-align: center">Подаръци</h1>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Create">
+        <button id="buttonCreate">Създай нов</button>
+    </a>
+}
+
+<br>
+<br>
+
+
+@foreach (var item in Model)
+{
+    <div style="display: flex; flex-direction: row; padding: 10px 0;; " class="presents">
+        <div class="image-container" style="width: 25%;">
+            <a asp-action="Details" asp-route-id="@item.Id">
+                <img id="image" src="@Html.DisplayFor(modelItem => item.Image)" width="240" , height="235" />
+            </a>
+        </div>
+        <div style="width: 25%; display: flex; flex-direction: column;  " class="description-container">
+            <br />
+            <h1 style="text-align: center;">@Html.DisplayFor(modelItem => item.Name)</h1>
+            <br />
+            <div style="display: flex; justify-content: center; align-items: center; ">
+                <div class="info" >
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Categories)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => item.Categories.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Aplieds)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => item.Aplieds.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Price)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => item.Price) лв.
+                    </dd>
+                </div>
+            </div>
+        </div>
+        <div style=" width: 40%; display: flex; justify-content: center; align-items: center;">
+            <div>
+                <form method="get" asp-controller="Orders" asp-action="CreateWithPresentId" asp-route-presentId="@item.Id">
+                    Броя:
+                    <br>
+                    <input name="presentId" type="hidden" value="@item.Id" />
+                    <input name="countP" id="ccount" type="number" value="1" style="color:black; font:bold" />
+                    <input id="buttonOrder" type="submit" value="Поръчай" />
+                </form>
+            </div>
+        </div>
+
+        <div style="width: 25%; display: flex; justify-content: center; align-items:center; flex-direction: column;" class="buttons">
+            <div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">
+                        <button class="buttonEdit">Промени</button>
+                    </a>
+                }
+            </div>
+            <div>
+                @if (User.IsInRole("Admin"))
+                {
+                }
+            </div>
+            
+                @if (!User.IsInRole("Admin"))
+                {
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        <button class="buttonDet">Детайли</button>
+                    </a>
+                }
+           
+            <div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        <button class="buttonDetAdmin">Детайли</button>
+                    </a>
+                }
+            </div>
+            <div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id">
+                        <button class="buttonDel">Премахни</button>
+                    </a>
+                }
+            </div>
+        </div>
+
+
+
+        @* <div class="buttons">
+    @if (User.IsInRole("Admin"))
+    {
+    <a asp-action="Edit" asp-route-id="@item.Id">
+    <button class="buttonEdit">Промени</button>
+    </a>
+    }
+    @if (User.IsInRole("Admin"))
+    {
+    <br>
+    }
+    @if (!User.IsInRole("Admin"))
+    {
+    <a asp-action="Details" asp-route-id="@item.Id">
+    <button class="buttonDet">Детайли</button>
+    </a>
+    }
+    @if (User.IsInRole("Admin"))
+    {
+    <a asp-action="Details" asp-route-id="@item.Id">
+    <button class="buttonDetAdmin">Детайли</button>
+    </a>
+    }
+    <br>
+    @if (User.IsInRole("Admin"))
+    {
+    <a asp-action="Delete" asp-route-id="@item.Id">
+    <button class="buttonDel">Премахни</button>
+    </a>
+    }
+    </div>
+    <div class="presentsText">
+    <br>
+    <b style="text-align: end; font-size: 40px">@Html.DisplayFor(modelItem => item.Name)</b>
+    <br>
+    <b>Каталогов номер: </b> @Html.DisplayFor(modelItem => item.CatalogNum)
+
+    <br>
+    <b>Категория: </b> @Html.DisplayFor(modelItem => item.Categories.Name)
+    <br>
+    <b>Приложение: </b> @Html.DisplayFor(modelItem => item.Aplieds.Name)
+    <br>
+    <b>Цена: </b> @Html.DisplayFor(modelItem => item.Price) лв.
+    </div>
+    <div style="float: right">
+    <form method="get" asp-controller="Orders" asp-action="CreateWithPresentId" asp-route-presentId="@item.Id">
+    Броя:
+    <br>
+    <input name="presentId" type="hidden" value="@item.Id" />
+    <input name="countP" id="ccount" type="number" value="1" style="color:black; font:bold" />
+    <input id="buttonOrder" type="submit" value="Поръчай" />
+    </form>
+    </div>
+    <br>
+    <br> *@
+    </div>
+    <br>
+}

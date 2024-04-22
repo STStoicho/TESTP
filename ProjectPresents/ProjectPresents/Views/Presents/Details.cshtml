@@ -1,0 +1,131 @@
+﻿@model ProjectPresents.Data.Present
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<br>
+<h1 style="text-align: center">Детайли на "@Html.DisplayFor(model => model.Name)"</h1>
+<br>
+
+<style>
+    body
+    {
+        background: rgb(151,232,255);
+        background: radial-gradient(circle, rgba(255,107,110,1) 50%, rgba(255,182,182,1) 100%);
+    }
+    #image 
+    {
+        margin: 15px;
+        float: left;
+        border-radius: 8px;
+        box-shadow: 3px 3px 3px 1px;
+        width: 440px;
+        height: 435px;
+        color: black;
+    }
+    .presentText 
+    {
+        margin-left: 500px;
+        font-size: 27px;
+        font-family: 'Comic Sans MS';
+    }
+    .buttonEdit 
+    {
+        width: 180px;
+        height: 80px;
+        margin-left: 15px;
+        border-radius: 8px;
+        background-color: lightskyblue;
+        transition: all 0.2s ease-out;
+        font-family: 'Comic Sans MS';
+        font-size: 20px;
+    }
+    .buttonEdit:hover 
+    {
+        background-color: deepskyblue;
+        color: white;
+        transition: all 0.2s ease-out;
+    }
+    .buttonBack 
+    {
+        width: 180px;
+        height: 80px;
+        margin-left: 15px;
+        border-radius: 8px;
+        background-color: lightskyblue;
+        transition: all 0.2s ease-out;
+        font-family: 'Comic Sans MS';
+    }
+    .buttonBack:hover {
+        background-color: deepskyblue;
+        color: white;
+        transition: all 0.2s ease-out;
+    }
+    #ccount 
+    {
+        width: 200px;
+        border-radius: 8px;
+        font-family: 'Comic Sans MS';
+    }
+    #buttonOrder 
+    {
+        width: 130px;
+        height: 55px;
+        border-radius: 8px;
+        transition: all 0.2s ease-out;
+        font-family: 'Comic Sans MS';
+    }
+    #buttonOrder:hover 
+    {
+        transition: all 0.2s ease-out;
+        background-color: lightgray;
+    }
+</style>
+
+
+<div ></div>
+
+
+<div>
+    <img id="image" src="@Html.DisplayFor(model => model.Image)" />
+    <br>
+    <br>
+    <div class="presentText">
+        <b>Име: </b>@Html.DisplayFor(model => model.Name)
+        <br>
+        <b>Каталожен номер: </b>@Html.DisplayFor(model => model.CatalogNum)
+        <br>
+        <b>Категория: </b>@Html.DisplayFor(model => model.Categories.Name)
+        <br>
+        <b>Приложение: </b>@Html.DisplayFor(model => model.Aplieds.Name)
+        <br>
+        <b>Описание: </b>@Html.DisplayFor(model => model.Description)
+        <br>
+        <b>Цена: </b>@Html.DisplayFor(model => model.Price)
+        <br>
+        <b>Дата: </b>@Html.DisplayFor(model => model.DateUpdate)
+    </div>
+</div>
+<div style="float:left; width: 600px">
+    <a asp-action="Index">
+        <button class="buttonBack">Предишна страница</button>
+    </a>
+    <form style="margin-left: 500px; font-size: 22px; float: right" method="get" asp-controller="Orders" asp-action="CreateWithPresentId" asp-route-presentId="@Model?.Id">
+        <b style="font-family:'Comic Sans MS'">Броя:</b>
+        <br>
+        <input name="presentId" type="hidden" value="@Model?.Id" />
+        <input name="countP" id="ccount" type="number" value="1" style="color:black; font:bold" />
+        <input id="buttonOrder" type="submit" value="Поръчай" />
+    </form>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.Id">
+                <button class="buttonEdit">Промени</button>
+            </a>
+        }
+    
+    <br>
+    <br>
+    <br>
+</div>

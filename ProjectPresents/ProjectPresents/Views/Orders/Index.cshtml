@@ -1,0 +1,127 @@
+﻿@model IEnumerable<ProjectPresents.Data.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<br>
+<h1 style="text-align: center">Пазарска кошница</h1>
+
+<style>
+    body
+    {
+        background: rgb(255,255,255);
+        background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(151,232,255,1) 100%);
+    }
+    .presents 
+    {
+        background-color: #46B6E0;
+        border-radius: 12px;
+        font-size: 18px;
+        font-family: 'Comic Sans MS';
+        box-shadow: 3px 3px 3px 1px;
+    }
+    #image {
+        margin: 15px;
+        float: left;
+        border-radius: 8px;
+        box-shadow: 3px 3px 3px 1px;
+        width: 190px;
+        height: 180px;
+        color: black;
+    }
+    .buttonDel 
+    {
+        margin: 6px;
+        width: 180px;
+        height: 80px;
+        float: right;
+        margin-top: 65px;
+        border-radius: 8px;
+        background-color: red;
+        transition: all 0.2s ease-out;
+    }
+    .buttonDel:hover 
+    {
+        transition: all 0.2s ease-out;
+        color: white;
+        background-color: #CE0000;
+    }
+    .presentText
+    {
+        margin-left: 20px;
+        float: left;
+        font-size: 18px;
+    }
+    #buttonCreate 
+    {
+        width: 130px;
+        height: 55px;
+        border-radius: 8px;
+        transition: all 0.2s ease-out;
+    }
+    #buttonCreate:hover 
+    {
+        transition: all 0.2s ease-out;
+        background-color: lightgray;
+    }
+</style>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Create">
+        <button id="buttonCreate">Създай нов</button>
+    </a>
+}
+
+<br>
+<br>
+
+@foreach (var item in Model) {
+    <div class="presents">
+        <tr>
+            <td>
+                <img id="image" src="@Html.DisplayFor(modelItem => item.Presents.Image)" />
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">
+                    <button class="buttonDel">Премахни</button>
+                </a>
+                <br>
+                <br>
+                <br>
+                <div class="presentText">
+                    <b>Име</b>
+                    <br>
+                    @Html.DisplayFor(modelItem => item.Presents.Name)
+                </div>
+                <div class="presentText">
+                    <b>Username</b>
+                    <br>
+                    @Html.DisplayFor(modelItem => item.Clietns.UserName)
+                </div>
+                <div class="presentText">
+                    <b>Количество</b>
+                    <br>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </div>
+                <div class="presentText">
+                    <b>Дата</b>
+                    <br>
+                    @Html.DisplayFor(modelItem => item.DateUpdate)
+                </div>
+                <div class="presentText">
+                    <b>Обща цена</b>
+                    <br>
+                    @(item.Presents.Price * item.Quantity) лв.
+                </div>
+            </td>
+        </tr>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+    <br>
+}
